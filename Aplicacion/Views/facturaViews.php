@@ -32,7 +32,6 @@ if (!isset($_SESSION['usuario'])) {
                     <option value="CC">Cédula de ciudadanía</option>
                     <option value="CE">Cédula de extranjería</option>
                     <option value="NIT">NIT</option>
-                   
                 </select>
             </div>
             <div class="form-group">
@@ -47,10 +46,8 @@ if (!isset($_SESSION['usuario'])) {
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" required>
             </div>
-          
             <button type="submit">Generar factura</button>
         </form>
     </div>
 </body>
 </html>
-
