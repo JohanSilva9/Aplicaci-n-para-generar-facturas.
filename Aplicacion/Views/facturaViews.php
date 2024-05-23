@@ -1,11 +1,8 @@
 <?php
 session_start();
-require_once 'facturaControllers.php';
-require_once 'clienteController.php';
-
 // Verificar si el usuario está autenticado, de lo contrario, redirigir al formulario de inicio de sesión
 if (!isset($_SESSION['usuario'])) {
-    header("Location: inicioViews.php");
+    header("Location: login.php");
     exit();
 }
 ?>
@@ -51,3 +48,5 @@ if (!isset($_SESSION['usuario'])) {
     </div>
 </body>
 </html>
+
+

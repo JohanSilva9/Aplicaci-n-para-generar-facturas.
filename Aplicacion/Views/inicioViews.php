@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -9,7 +10,7 @@
 <body>
     <div class="container">
         <h2>Iniciar sesión</h2>
-        <form action="login.php" method="POST">
+        <form action="facturaViews.php" method="POST">
             <div class="form-group">
                 <label for="username">Usuario:</label>
                 <input type="text" id="username" name="username" required>
@@ -23,8 +24,3 @@
     </div>
 </body>
 </html>
-
-
-
-
-
