@@ -2,7 +2,7 @@
 
 namespace App\controllers;
 
-use App\controllers\databases\ConexionDBController;
+use App\controllers\ConexionDBController;
 
 class AuthController extends ConexionDBController
 {

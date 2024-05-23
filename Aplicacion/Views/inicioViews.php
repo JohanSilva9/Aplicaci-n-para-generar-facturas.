@@ -9,7 +9,7 @@
 <body>
     <div class="container">
         <h2>Iniciar sesión</h2>
-        <form action="facturaViews.php" method="POST">
+        <form action="Controllers/authcontroladorControllers.php" method="POST"> <!-- Modifica la acción del formulario -->
             <div class="form-group">
                 <label for="username">Usuario:</label>
                 <input type="text" id="username" name="username" required>
@@ -26,6 +26,8 @@
     </div>
 </body>
 </html>
+
+
 
 
 

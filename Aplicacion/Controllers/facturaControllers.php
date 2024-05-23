@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Controllers\Databases\ConexionDBController;
+use App\Controllers\ConexionDBController;
 
 class FacturaController extends ConexionDBController
 {
