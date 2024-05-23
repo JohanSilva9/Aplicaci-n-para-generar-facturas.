@@ -1,41 +1,43 @@
 <?php
 
-namespace App\controllers;
+namespace App\Controllers;
 
-use App\controllers\databases\ConexionDBController;
+use App\Controllers\Databases\ConexionDBController;
 
-class facturaControllers extends ConexionDBController
+class FacturaController extends ConexionDBController
 {
     public function generarFactura($cliente, $productos)
     {
-        // Generar número de referencia
         $referencia = uniqid('REF');
-
-        // Calcular descuento
         $total = 0;
         foreach ($productos as $producto) {
             $total += $producto['precio'] * $producto['cantidad'];
         }
 
-        $descuento = '0';
+        $descuento = 0;
         if ($total > 200000) {
-            $descuento = '10';
+            $descuento = 10;
         } elseif ($total > 100000) {
-            $descuento = '5';
+            $descuento = 5;
         }
 
-        // Insertar datos en la tabla facturas
-        $sql = "INSERT INTO facturas (referencia, fecha, idCliente, descuento) VALUES ('$referencia', NOW(), {$cliente['id']}, '$descuento')";
-        $this->execSQL($sql);
+        $sqlFactura = "INSERT INTO facturas (referencia, fecha, idCliente, estado, descuento) VALUES (?, NOW(), ?, 'Pagada', ?)";
+        $stmtFactura = $this->getConnection()->prepare($sqlFactura);
+        $stmtFactura->bind_param("sii", $referencia, $cliente['id'], $descuento);
+        $stmtFactura->execute();
+        $stmtFactura->close();
 
-        // Insertar detalles en la tabla detalleFacturas
+        $sqlDetalle = "INSERT INTO detalleFacturas (cantidad, precioUnitario, idArticulo, referenciaFactura) VALUES (?, ?, ?, ?)";
+        $stmtDetalle = $this->getConnection()->prepare($sqlDetalle);
+
         foreach ($productos as $producto) {
-            $sqlDetalle = "INSERT INTO detalleFacturas (cantidad, precioUnitario, idArticulo, referenciaFactura) VALUES ({$producto['cantidad']}, {$producto['precio']}, {$producto['id']}, '$referencia')";
-            $this->execSQL($sqlDetalle);
+            $stmtDetalle->bind_param("iids", $producto['cantidad'], $producto['precio'], $producto['id'], $referencia);
+            $stmtDetalle->execute();
         }
+
+        $stmtDetalle->close();
 
         return $referencia;
     }
 }
 ?>
-

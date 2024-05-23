@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar sesión - Tienda deportiva</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <div class="container">
@@ -18,11 +18,20 @@
                 <label for="password">Contraseña:</label>
                 <input type="password" id="password" name="password" required>
             </div>
+            <?php if (isset($error_message)): ?>
+                <p class="error"><?php echo $error_message; ?></p>
+            <?php endif; ?>
             <button type="submit">Iniciar sesión</button>
         </form>
     </div>
 </body>
 </html>
+
+
+
+
+
+
 
 
 

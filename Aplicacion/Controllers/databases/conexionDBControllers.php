@@ -6,13 +6,11 @@ use mysqli;
 
 class ConexionDBController
 {
-
     private $host = 'localhost';
     private $user = 'root'; 
     private $pwd = ''; 
     private $dataBase = 'facturacion_tienda_db';
-
-    private $conex;
+    protected $conex;
 
     public function __construct()
     {
@@ -35,9 +33,14 @@ class ConexionDBController
         return $result;
     }
 
+    public function getConnection()
+    {
+        return $this->conex;
+    }
+
     public function close()
     {
         $this->conex->close();
     }
 }
-
+?>

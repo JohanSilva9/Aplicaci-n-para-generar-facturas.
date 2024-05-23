@@ -1,5 +1,8 @@
 <?php
 namespace App\views;
+
+use App\models\DetalleFactura;
+
 ?>
 
 <!DOCTYPE html>
@@ -14,36 +17,17 @@ namespace App\views;
     <div class="container">
         <h2>Detalle de Factura</h2>
         <div>
-            <h3>Número de referencia: <?php echo $factura['referencia']; ?></h3>
-            <p>Fecha de la compra: <?php echo $factura['fecha']; ?></p>
-            <p>Estado: <?php echo $factura['estado']; ?></p>
-            <h4>Información del Cliente</h4>
-            <p>Nombre: <?php echo $cliente['nombreCompleto']; ?></p>
-            <p>Tipo de documento: <?php echo $cliente['tipoDocumento']; ?></p>
-            <p>Número de documento: <?php echo $cliente['numeroDocumento']; ?></p>
-            <p>Teléfono: <?php echo $cliente['telefono']; ?></p>
-            <p>Email: <?php echo $cliente['email']; ?></p>
-            <h4>Productos</h4>
-            <table>
-                <tr>
-                    <th>Nombre del Producto</th>
-                    <th>Precio Unitario</th>
-                    <th>Cantidad</th>
-                    <th>Valor Total</th>
-                </tr>
-                <?php foreach ($productos as $producto): ?>
-                    <tr>
-                        <td><?php echo $producto['nombre']; ?></td>
-                        <td><?php echo $producto['precio']; ?></td>
-                        <td><?php echo $producto['cantidad']; ?></td>
-                        <td><?php echo $producto['precio'] * $producto['cantidad']; ?></td>
-                    </tr>
-                <?php endforeach; ?>
-            </table>
-            <p>Descuento: <?php echo $factura['descuento']; ?>%</p>
-            <p>Total a pagar: <?php echo $totalAPagar; ?></p>
+            <?php if(isset($detalleFactura)): ?>
+                <h3>Número de referencia: <?php echo htmlspecialchars($detalleFactura->getReferenciaFactura()); ?></h3>
+                <p>Cantidad: <?php echo htmlspecialchars($detalleFactura->getCantidad()); ?></p>
+                <p>Precio Unitario: <?php echo htmlspecialchars($detalleFactura->getPrecioUnitario()); ?></p>
+                <p>ID del Artículo: <?php echo htmlspecialchars($detalleFactura->getIdArticulo()); ?></p>
+            <?php else: ?>
+                <p>Detalle de factura no encontrado.</p>
+            <?php endif; ?>
         </div>
     </div>
 </body>
 </html>
+
 

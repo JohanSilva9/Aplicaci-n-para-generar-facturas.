@@ -2,14 +2,12 @@
 namespace App\models;
 
 class DetalleFactura {
-    // Propiedades
     private $id;
     private $cantidad;
     private $precioUnitario;
     private $idArticulo;
     private $referenciaFactura;
 
-    // Constructor
     public function __construct($id, $cantidad, $precioUnitario, $idArticulo, $referenciaFactura) {
         $this->id = $id;
         $this->cantidad = $cantidad;
@@ -18,7 +16,6 @@ class DetalleFactura {
         $this->referenciaFactura = $referenciaFactura;
     }
 
-    // Getters
     public function getId() {
         return $this->id;
     }
@@ -40,3 +37,4 @@ class DetalleFactura {
     }
 }
 ?>
+

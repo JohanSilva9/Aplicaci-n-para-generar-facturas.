@@ -2,14 +2,12 @@
 namespace App\models;
 
 class Factura {
-    // Propiedades
     private $referencia;
     private $fecha;
     private $idCliente;
     private $estado;
     private $descuento;
 
-    // Constructor
     public function __construct($referencia, $fecha, $idCliente, $estado, $descuento) {
         $this->referencia = $referencia;
         $this->fecha = $fecha;
@@ -18,7 +16,6 @@ class Factura {
         $this->descuento = $descuento;
     }
 
-    // Getters
     public function getReferencia() {
         return $this->referencia;
     }
@@ -40,4 +37,3 @@ class Factura {
     }
 }
 ?>
-

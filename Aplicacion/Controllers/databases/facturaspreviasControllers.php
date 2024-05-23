@@ -6,35 +6,33 @@ use App\controllers\databases\ConexionDBController;
 
 class FacturasPreviasController extends ConexionDBController
 {
-    public function consultarFacturas()
+    public function obtenerFacturasCliente($idCliente)
     {
-        $sql = "SELECT * FROM facturas";
-        $result = $this->conex->query($sql);
-        
-        if ($result) {
-            return $result->fetch_all(MYSQLI_ASSOC);
-        } else {
-            // Manejar el error en la consulta SQL
-            return false;
+        $sql = "SELECT * FROM facturas WHERE idCliente = $idCliente";
+        $result = $this->execSQL($sql);
+        $facturas = [];
+
+        while ($row = $result->fetch_assoc()) {
+            $facturas[] = $row;
         }
+
+        return $facturas;
     }
 
-    public function cambiarEstadoFactura($referencia, $estado)
+    public function obtenerDetallesFactura($referenciaFactura)
     {
-        $sql = "UPDATE facturas SET estado=? WHERE referencia=?";
-        $stmt = $this->conex->prepare($sql);
-        
-        if ($stmt) {
-            $stmt->bind_param('ss', $estado, $referencia);
-            $stmt->execute();
-            $stmt->close();
-            return true;
-        } else {
-            // Manejar el error en la preparación de la consulta
-            return false;
+        $sql = "SELECT * FROM detalleFacturas WHERE referenciaFactura = '$referenciaFactura'";
+        $result = $this->execSQL($sql);
+        $detalles = [];
+
+        while ($row = $result->fetch_assoc()) {
+            $detalles[] = $row;
         }
+
+        return $detalles;
     }
 }
 ?>
+
 
 

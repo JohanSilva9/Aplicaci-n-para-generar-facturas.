@@ -2,7 +2,6 @@
 namespace App\models;
 
 class Cliente {
-    // Propiedades
     private $id;
     private $nombreCompleto;
     private $tipoDocumento;
@@ -10,7 +9,6 @@ class Cliente {
     private $email;
     private $telefono;
 
-    // Constructor
     public function __construct($id, $nombreCompleto, $tipoDocumento, $numeroDocumento, $email, $telefono) {
         $this->id = $id;
         $this->nombreCompleto = $nombreCompleto;
@@ -20,7 +18,6 @@ class Cliente {
         $this->telefono = $telefono;
     }
 
-    // Getters
     public function getId() {
         return $this->id;
     }
@@ -46,3 +43,4 @@ class Cliente {
     }
 }
 ?>
+
