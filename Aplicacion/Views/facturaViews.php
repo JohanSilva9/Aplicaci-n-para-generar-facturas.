@@ -1,14 +1,7 @@
-<?php
-session_start();
-// Verificar si el usuario está autenticado, de lo contrario, redirigir al formulario de inicio de sesión
-if (!isset($_SESSION['usuario'])) {
-    header("Location: login.php");
-    exit();
-}
-?>
+
 
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,7 +11,7 @@ if (!isset($_SESSION['usuario'])) {
 <body>
     <div class="container">
         <h2>Generar factura</h2>
-        <form action="procesar_factura.php" method="POST">
+        <form action="facturasPreviasViews.php" method="POST">
             <div class="form-group">
                 <label for="nombre">Nombre completo:</label>
                 <input type="text" id="nombre" name="nombre" required>

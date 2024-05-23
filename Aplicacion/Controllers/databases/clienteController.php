@@ -4,7 +4,7 @@ namespace App\controllers;
 
 use App\controllers\databases\ConexionDBController;
 
-class clienteController extends ConexionDBController
+class ClienteController extends ConexionDBController
 {
     public function registrarCliente($nombreCompleto, $tipoDocumento, $numeroDocumento, $email, $telefono)
     {
@@ -20,5 +20,5 @@ class clienteController extends ConexionDBController
         return $this->execSQL($sql);
     }
 }
-?>
+
 
