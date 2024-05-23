@@ -1,0 +1,45 @@
+/* Reset de estilos */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilos para el cuerpo y contenedor */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para el título */
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+h3 {
+    margin-bottom: 10px;
+    color: #555;
+}
+
+/* Estilos para el contenido */
+p {
+    margin-bottom: 10px;
+    color: #555;
+}
+
+/* Estilos para el mensaje de no encontrado */
+p.no-encontrado {
+    color: #ff0000;
+    font-weight: bold;
+}
