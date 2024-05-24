@@ -1,23 +1,23 @@
 <?php
 
-namespace App\controllers\;
-
-use mysqli;
+namespace App\controllers;
 
 class ConexionDBController
 {
     private $host = 'localhost';
     private $user = 'root'; 
-    private $pwd = ''; 
+    private $pwd = 'root'; 
     private $dataBase = 'facturacion_tienda_db';
     protected $conex;
 
     public function __construct()
     {
-        $this->conex = new mysqli($this->host, $this->user, $this->pwd, $this->dataBase);
+        $this->conex = new \mysqli($this->host, $this->user, $this->pwd, $this->dataBase);
 
         if ($this->conex->connect_error) {
             die('Error en la conexión a la base de datos: ' . $this->conex->connect_error);
+        } else {
+            //echo "Conexión establecida exitosamente";
         }
     }
 
@@ -43,4 +43,8 @@ class ConexionDBController
         $this->conex->close();
     }
 }
+
+// Ejemplo de uso de la clase
+$conexion = new ConexionDBController();
+
 ?>

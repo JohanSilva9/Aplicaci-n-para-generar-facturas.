@@ -1,3 +1,20 @@
+<?php
+
+use App\controllers\ConexionDBController;
+use App\controllers\articuloController;
+
+require '../Controllers/conexionDBControllers.php';
+require '../Controllers/articuloControllers.php';
+
+
+$conexion = new ConexionDBController();
+$articuloController = new articuloController($conexion);
+
+$idArticulo = 1; 
+$articulo = $articuloController->obtenerArticulo($idArticulo);
+$articulos = $articuloController->obtenerArticulos();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -44,9 +61,16 @@
             <div id="productos" class="productos">
                 <div class="producto">
                     <label for="idArticulo">ID Artículo:</label>
-                    <input type="text" name="productos[0][id]" required>
+                    <select id="articulos"  name="articulos" required>
+                        <?php
+                        foreach($articulos as $item){
+                            echo '<option>'.$item->getNombre().'</option>';
+                        }
+                        ?>
+                    
+                    </select>
 
-                    <label for="cantidad">Cantidad:</label>
+                    <label for="cantidad"><br><br>Cantidad:</label>
                     <input type="number" name="productos[0][cantidad]" required>
 
                     <label for="precio">Precio Unitario:</label>
@@ -69,9 +93,10 @@
 
             nuevoProducto.innerHTML = `
                 <label for="idArticulo">ID Artículo:</label>
-                <input type="text" name="productos[${contador}][id]" required>
+                <select id="articulo" name="articulo" requiered>
+                </select>
 
-                <label for="cantidad">Cantidad:</label>
+                <label for="cantidad"><br><br>Cantidad:</label>
                 <input type="number" name="productos[${contador}][cantidad]" required>
 
                 <label for="precio">Precio Unitario:</label>

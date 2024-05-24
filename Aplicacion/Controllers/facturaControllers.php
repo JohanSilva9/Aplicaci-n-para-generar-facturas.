@@ -39,5 +39,7 @@ class FacturaController extends ConexionDBController
 
         return $referencia;
     }
+    
 }
+
 ?>
