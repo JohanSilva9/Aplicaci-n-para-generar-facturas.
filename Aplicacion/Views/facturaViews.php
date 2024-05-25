@@ -1,11 +1,9 @@
 <?php
-
 use App\controllers\ConexionDBController;
 use App\controllers\articuloController;
 
 require '../Controllers/conexionDBControllers.php';
 require '../Controllers/articuloControllers.php';
-
 
 $conexion = new ConexionDBController();
 $articuloController = new articuloController($conexion);
@@ -61,20 +59,18 @@ $articulos = $articuloController->obtenerArticulos();
             <div id="productos" class="productos">
                 <div class="producto">
                     <label for="idArticulo">ID Artículo:</label>
-                    <select id="articulos"  name="articulos" required>
-                        <?php
-                        foreach($articulos as $item){
-                            echo '<option>'.$item->getNombre().'</option>';
-                        }
-                        ?>
-                    
+                    <select id="articulo1" name="articulos" onchange="updatePrice(this)" required>
+                        <option value="">Seleccione un artículo</option>
+                        <?php foreach($articulos as $item): ?>
+                            <option value="<?= $item->getPrecio() ?>"><?= $item->getNombre() ?></option>
+                        <?php endforeach; ?>
                     </select>
 
                     <label for="cantidad"><br><br>Cantidad:</label>
-                    <input type="number" name="productos[0][cantidad]" required>
+                    <input type="number" name="productos[1][cantidad]" required>
 
                     <label for="precio">Precio Unitario:</label>
-                    <input type="number" step="0.01" name="productos[0][precio]" required>
+                    <label id="precioUnitario1">Seleccione un artículo</label>
                 </div>
             </div>
             <button type="button" onclick="agregarProducto()" class="btn-agregar">Agregar Producto</button>
@@ -84,7 +80,7 @@ $articulos = $articuloController->obtenerArticulos();
     </div>
 
     <script>
-        let contador = 1;
+        let contador = 2; // Iniciamos el contador desde 2 para el primer producto agregado
 
         function agregarProducto() {
             const productosDiv = document.getElementById('productos');
@@ -93,23 +89,33 @@ $articulos = $articuloController->obtenerArticulos();
 
             nuevoProducto.innerHTML = `
                 <label for="idArticulo">ID Artículo:</label>
-                <select id="articulo" name="articulo" requiered>
+                <select id="articulo${contador}" name="articulos" onchange="updatePrice(this)" required>
+                    <option value="">Seleccione un artículo</option>
+                    <?php foreach($articulos as $item): ?>
+                        <option value="<?= $item->getPrecio() ?>"><?= $item->getNombre() ?></option>
+                    <?php endforeach; ?>
                 </select>
 
                 <label for="cantidad"><br><br>Cantidad:</label>
                 <input type="number" name="productos[${contador}][cantidad]" required>
 
                 <label for="precio">Precio Unitario:</label>
-                <input type="number" step="0.01" name="productos[${contador}][precio]" required>
+                <label id="precioUnitario${contador}">Seleccione un artículo</label>
             `;
 
             productosDiv.appendChild(nuevoProducto);
             contador++;
         }
+
+        function updatePrice(select) {
+            const selectedOption = select.options[select.selectedIndex];
+            const precio = selectedOption.value;
+            const productoId = select.id.slice(-1); // Obtenemos el ID del producto
+            document.getElementById('precioUnitario' + productoId).textContent = 'Precio Unitario: ' + precio;
+        }
     </script>
 </body>
 </html>
-
 
 
 

@@ -1,7 +1,9 @@
 <?php
+
 namespace App\controllers;
-use App\models\DetalleFacturaModels\Articulo;
-require '../Models/detalleFacturaModels.php';
+require '../Models/articuloModels.php';
+use App\models\Articulo;
+
 
 
 class articuloController
@@ -38,11 +40,12 @@ class articuloController
         $articulos = [];
         
         while($articulo = $resultado->fetch_assoc()){
-            $modelo = new Articulo();
-            $modelo->setId($articulo['id']);
-            $modelo->setNombre($articulo['nombre']);
-            $modelo->setPrecio($articulo['precio']);
-            // Puedes agregar más propiedades según la estructura de tu tabla 'articulos'
+            $id=$articulo['id'];
+            $nombre=$articulo['nombre'];
+            $precio =$articulo['precio'];
+            $modelo = new Articulo($id, $nombre, $precio);
+          
+            
             
             array_push($articulos, $modelo);
         }
@@ -54,5 +57,5 @@ class articuloController
 
 $id = 1;
 $conexion = new ConexionDBController();
-$articuloController = new ArticuloController($conexion);
+$articuloController = new articuloController($conexion); 
 $articulo = $articuloController->obtenerArticulo($id);

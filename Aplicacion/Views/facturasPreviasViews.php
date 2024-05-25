@@ -42,7 +42,7 @@
                         <td><?php echo $factura['fecha']; ?></td>
                         <td><?php echo $factura['estado']; ?></td>
                         <td><?php echo $factura['descuento']; ?>%</td>
-                        <td><a href="index.php?controller=FacturasPreviasController&action=verDetalles&referencia=<?php echo $factura['referencia']; ?>">Ver Detalles</a></td>
+                        <td><a href="controladorVerDetalles.php?referencia=<?php echo $factura['referencia']; ?>">Ver Detalles</a></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
