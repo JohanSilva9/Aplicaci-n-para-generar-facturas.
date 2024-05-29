@@ -2,8 +2,8 @@
 use App\Controllers\ConexionDBController;
 use App\Controllers\FacturaController;
 
-require '../Controllers/ConexionDBController.php';
-require '../Controllers/FacturaController.php';
+require '../Controllers/ConexionDBControllers.php';
+require '../Controllers/FacturaControllers.php';
 
 $facturas = null;
 $detalles = null;
@@ -30,7 +30,7 @@ if (isset($_GET['referencia'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Facturas Previas - Tienda deportiva</title>
-    <link rel="stylesheet" href="css/stylesFacturas.css">
+    <link rel="stylesheet" href="css/stylesFacturasPrevias.css">
 </head>
 <body>
     <div class="container">
@@ -94,7 +94,7 @@ if (isset($_GET['referencia'])) {
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($detalles as $detalle): ?>
+                    <?php foreach ($detalle as $detalle): ?>
                         <tr>
                             <td><?= $detalle['idArticulo'] ?></td>
                             <td><?= $detalle['nombreArticulo'] ?></td>

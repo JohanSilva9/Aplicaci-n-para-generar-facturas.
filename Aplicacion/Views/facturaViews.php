@@ -100,11 +100,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <span id="precioUnitarioDisplay1">Seleccione un artículo</span>
                 </div>
             </div>
-            <button type="button" onclick="agregarProducto()" class="btn-agregar">
-                Agregar Producto</button>
+            <button type="button" onclick="agregarProducto()" class="btn-agregar">Agregar Producto</button>
             <br><br>
             <input type="submit" value="Generar Factura" class="btn-generar">
         </form>
+        <br>
+        <a href="MenuViews.php" class="btn-menu">Volver al Menú</a>
     </div>
 
     <script>

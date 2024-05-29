@@ -29,7 +29,7 @@ class AuthController extends ConexionDBController
                 $_SESSION['username'] = $username;
 
                 // Redireccionar a la página de facturasViews
-                header("Location: facturaViews.php");
+                header("Location: MenuViews.php");
                 exit();
             } else {
                 header("Location: inicioViews.php");

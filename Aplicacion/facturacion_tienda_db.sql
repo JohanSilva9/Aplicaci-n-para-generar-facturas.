@@ -83,7 +83,7 @@ CREATE TABLE `detalleFacturas` (
   `cantidad` int(11) NOT NULL,
   `precioUnitario` double NOT NULL,
   `idArticulo` int(11) NOT NULL,
-  `refenciaFactura` varchar(150) NOT NULL
+  `referenciaFactura` varchar(150) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
