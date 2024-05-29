@@ -94,7 +94,7 @@ CREATE TABLE `detalleFacturas` (
 
 DROP TABLE IF EXISTS `facturas`;
 CREATE TABLE `facturas` (
-  `refencia` varchar(150) NOT NULL,
+  `referencia` varchar(150) NOT NULL,
   `fecha` datetime NOT NULL,
   `idCliente` int(11) NOT NULL,
   `estado` enum('Cambio','Devolución','Error','Pagada') NOT NULL DEFAULT 'Pagada',

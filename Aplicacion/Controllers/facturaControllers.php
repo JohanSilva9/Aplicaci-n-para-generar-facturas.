@@ -2,44 +2,166 @@
 
 namespace App\Controllers;
 
-use App\Controllers\ConexionDBController;
+use Exception;
 
-class FacturaController extends ConexionDBController
+class FacturaController
 {
-    public function generarFactura($cliente, $productos)
+    private $conexion;
+
+    public function __construct($conexion)
     {
+        $this->conexion = $conexion;
+    }
+
+    private function obtenerIdCliente($cliente)
+    {
+        $sql = "SELECT id FROM clientes WHERE numeroDocumento = ? AND tipoDocumento = ?";
+        $stmt = $this->conexion->getConnection()->prepare($sql);
+
+        if ($stmt === false) {
+            throw new Exception('Error al preparar la consulta del cliente: ' . $this->conexion->getConnection()->error);
+        }
+
+        $stmt->bind_param("ss", $cliente['numeroDocumento'], $cliente['tipoDocumento']);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $clienteData = $result->fetch_assoc();
+        $stmt->close();
+
+        if ($clienteData) {
+            return $clienteData['id'];
+        } else {
+            // Insertar cliente si no existe
+            $sqlInsert = "INSERT INTO clientes (nombreCompleto, tipoDocumento, numeroDocumento, email, telefono) VALUES (?, ?, ?, ?, ?)";
+            $stmtInsert = $this->conexion->getConnection()->prepare($sqlInsert);
+
+            if ($stmtInsert === false) {
+                throw new Exception('Error al preparar la inserción del cliente: ' . $this->conexion->getConnection()->error);
+            }
+
+            $stmtInsert->bind_param("sssss", $cliente['nombreCompleto'], $cliente['tipoDocumento'], $cliente['numeroDocumento'], $cliente['email'], $cliente['telefono']);
+            if ($stmtInsert->execute() === false) {
+                throw new Exception('Error al insertar el cliente: ' . $stmtInsert->error);
+            }
+
+            $idCliente = $stmtInsert->insert_id;
+            $stmtInsert->close();
+            return $idCliente;
+        }
+    }
+
+    public function crearFactura($cliente, $productos)
+    {
+        // Verificar que cada producto dentro de $productos sea un array con las claves necesarias
+        foreach ($productos as $producto) {
+            if (!is_array($producto) || !isset($producto['cantidad']) || !isset($producto['precio']) || !isset($producto['id'])) {
+                throw new Exception('Error: cada producto debe ser un array con las claves "cantidad", "precio" y "id".');
+            }
+
+            // Verificar que el idArticulo exista en la tabla articulos
+            $sqlArticulo = "SELECT id FROM articulos WHERE id = ?";
+            $stmtArticulo = $this->conexion->getConnection()->prepare($sqlArticulo);
+            if ($stmtArticulo === false) {
+                throw new Exception('Error al preparar la consulta del artículo: ' . $this->conexion->getConnection()->error);
+            }
+            $stmtArticulo->bind_param("i", $producto['id']);
+            $stmtArticulo->execute();
+            $resultArticulo = $stmtArticulo->get_result();
+            if ($resultArticulo->num_rows === 0) {
+                throw new Exception('Error: el artículo con id ' . $producto['id'] . ' no existe.');
+            }
+            $stmtArticulo->close();
+        }
+
+        // Obtener el idCliente
+        $idCliente = $this->obtenerIdCliente($cliente);
+
+        // Generar una referencia única para la factura
         $referencia = uniqid('REF');
+
+        // Calcular el total de la factura
         $total = 0;
         foreach ($productos as $producto) {
             $total += $producto['precio'] * $producto['cantidad'];
         }
 
-        $descuento = 0;
+        // Determinar el descuento
+        $descuento = '0';
         if ($total > 200000) {
-            $descuento = 10;
+            $descuento = '10';
         } elseif ($total > 100000) {
-            $descuento = 5;
+            $descuento = '5';
         }
 
+        // Insertar la factura en la base de datos
         $sqlFactura = "INSERT INTO facturas (referencia, fecha, idCliente, estado, descuento) VALUES (?, NOW(), ?, 'Pagada', ?)";
-        $stmtFactura = $this->getConnection()->prepare($sqlFactura);
-        $stmtFactura->bind_param("sii", $referencia, $cliente['id'], $descuento);
-        $stmtFactura->execute();
-        $stmtFactura->close();
+        $stmtFactura = $this->conexion->getConnection()->prepare($sqlFactura);
 
-        $sqlDetalle = "INSERT INTO detalleFacturas (cantidad, precioUnitario, idArticulo, referenciaFactura) VALUES (?, ?, ?, ?)";
-        $stmtDetalle = $this->getConnection()->prepare($sqlDetalle);
+        if ($stmtFactura === false) {
+            throw new Exception('Error al preparar la inserción de la factura: ' . $this->conexion->getConnection()->error);
+        }
+
+        // Vincular parámetros
+        $stmtFactura->bind_param("sis", $referencia, $idCliente, $descuento);
+
+        if ($stmtFactura->execute() === false) {
+            throw new Exception('Error al insertar la factura: ' . $stmtFactura->error);
+        }
+
+        // Insertar los detalles de la factura en la base de datos
+        $sqlDetalle = "INSERT INTO detalleFacturas (cantidad, precioUnitario, idArticulo, refenciaFactura) VALUES (?, ?, ?, ?)";
+        $stmtDetalle = $this->conexion->getConnection()->prepare($sqlDetalle);
+
+        if ($stmtDetalle === false) {
+            throw new Exception('Error al preparar la inserción del detalle de la factura: ' . $this->conexion->getConnection()->error);
+        }
 
         foreach ($productos as $producto) {
             $stmtDetalle->bind_param("iids", $producto['cantidad'], $producto['precio'], $producto['id'], $referencia);
-            $stmtDetalle->execute();
+            if ($stmtDetalle->execute() === false) {
+                throw new Exception('Error al insertar el detalle de la factura: ' . $stmtDetalle->error);
+            }
         }
 
+        // Cerrar las consultas preparadas
+        $stmtFactura->close();
         $stmtDetalle->close();
 
+        // Devolver la referencia de la factura generada
         return $referencia;
     }
-    
-}
 
-?>
+    public function obtenerFacturasPorCliente($numeroDocumento, $tipoDocumento)
+    {
+        $sql = "SELECT * FROM facturas WHERE idCliente IN (SELECT id FROM clientes WHERE numeroDocumento = ? AND tipoDocumento = ?)";
+        $stmt = $this->conexion->getConnection()->prepare($sql);
+
+        if ($stmt === false) {
+            throw new Exception('Error al preparar la consulta de facturas por cliente: ' . $this->conexion->getConnection()->error);
+        }
+
+        $stmt->bind_param("ss", $numeroDocumento, $tipoDocumento);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $facturas = $result->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $facturas;
+    }
+
+    public function obtenerDetallesFactura($referencia)
+    {
+        $sql = "SELECT * FROM detalleFacturas WHERE refenciaFactura = ?";
+        $stmt = $this->conexion->getConnection()->prepare($sql);
+
+        if ($stmt === false) {
+            throw new Exception('Error al preparar la consulta de detalles de factura: ' . $this->conexion->getConnection()->error);
+        }
+
+        $stmt->bind_param("s", $referencia);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $detalles = $result->fetch_all(MYSQLI_ASSOC);
+       
+    }
+}

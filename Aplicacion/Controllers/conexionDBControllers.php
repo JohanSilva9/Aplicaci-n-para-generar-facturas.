@@ -1,6 +1,6 @@
 <?php
 
-namespace App\controllers;
+namespace App\Controllers;
 
 class ConexionDBController
 {
@@ -43,8 +43,3 @@ class ConexionDBController
         $this->conex->close();
     }
 }
-
-// Ejemplo de uso de la clase
-$conexion = new ConexionDBController();
-
-?>

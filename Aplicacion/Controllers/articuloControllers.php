@@ -1,12 +1,11 @@
 <?php
 
-namespace App\controllers;
+namespace App\Controllers;
 require '../Models/articuloModels.php';
-use App\models\Articulo;
+use App\Models\Articulo;
+use App\Controllers\ConexionDBController;
 
-
-
-class articuloController
+class ArticuloController
 {
     private $conexion;
 
@@ -17,45 +16,43 @@ class articuloController
 
     public function obtenerArticulo($id)
     {
-       
         $sqlArticulo = "SELECT * FROM articulos WHERE id = $id";
-        
-        
         $resultado = $this->conexion->execSQL($sqlArticulo);
         
         if ($resultado->num_rows > 0) {
-           
             $articulo = $resultado->fetch_assoc();
-            return $articulo;
+            return new Articulo($articulo['id'], $articulo['nombre'], $articulo['precio']);
         } else {
-            
             return null;
         }
     }
 
-    function obtenerArticulos(){
-        $sqlArticulo = "SELECT * FROM articulos ";
-        
+    public function obtenerArticulos()
+    {
+        $sqlArticulo = "SELECT * FROM articulos";
         $resultado = $this->conexion->execSQL($sqlArticulo);
         $articulos = [];
         
-        while($articulo = $resultado->fetch_assoc()){
-            $id=$articulo['id'];
-            $nombre=$articulo['nombre'];
-            $precio =$articulo['precio'];
-            $modelo = new Articulo($id, $nombre, $precio);
-          
-            
-            
+        while ($articulo = $resultado->fetch_assoc()) {
+            $modelo = new Articulo($articulo['id'], $articulo['nombre'], $articulo['precio']);
             array_push($articulos, $modelo);
         }
         
         return $articulos;
     }
-    
 }
+
 
 $id = 1;
 $conexion = new ConexionDBController();
-$articuloController = new articuloController($conexion); 
+$articuloController = new ArticuloController($conexion); 
 $articulo = $articuloController->obtenerArticulo($id);
+
+if ($articulo) {
+    echo "ID: " . $articulo->getId() . "<br>";
+    echo "Nombre: " . $articulo->getNombre() . "<br>";
+    echo "Precio: " . $articulo->getPrecio() . "<br>";
+} else {
+    echo "Artículo no encontrado.";
+}
+?>
