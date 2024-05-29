@@ -4,7 +4,7 @@ require '../Controllers/FacturaControllers.php';
 require '../Controllers/conexionDBControllers.php';
 
 use App\Controllers\FacturaController;
-use App\controllers\ConexionDBController;
+use App\Controllers\ConexionDBController;
 
 if (isset($_GET['referencia'])) {
     
@@ -58,10 +58,10 @@ if (isset($_GET['referencia'])) {
                         <tbody>
                             <?php foreach ($detalles as $detalle): ?>
                                 <tr>
-                                    <td><?php echo htmlspecialchars($detalle['nombre']); ?></td>
+                                    <td><?php echo htmlspecialchars($detalle['nombreProducto']); ?></td>
                                     <td><?php echo htmlspecialchars($detalle['precioUnitario']); ?></td>
                                     <td><?php echo htmlspecialchars($detalle['cantidad']); ?></td>
-                                    <td><?php echo htmlspecialchars($detalle['precioUnitario'] * $detalle['cantidad']); ?></td>
+                                    <td><?php echo htmlspecialchars($detalle['valorTotal']); ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
@@ -76,9 +76,8 @@ if (isset($_GET['referencia'])) {
                 <p>Detalle de factura no encontrado.</p>
             <?php endif; ?>
         </div>
-        <a href="menuViews.php">Volver al Menú</a>
+        <a href="menuViews.php" class="boton" >Volver al Menú</a>
         <a href="facturasPreviasViews.php" class="boton">Volver a Facturas Previas</a>
     </div>
 </body>
 </html>
-

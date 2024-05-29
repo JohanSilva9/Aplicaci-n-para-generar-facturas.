@@ -33,7 +33,7 @@ h1 {
     padding: 15px 30px;
     margin: 10px;
     background-color: #fff;
-    color: #1cbec4;
+    color: #000000;
     text-decoration: none;
     font-size: 1.5em;
     border-radius: 10px;
@@ -42,7 +42,7 @@ h1 {
 }
 
 .boton-menu:hover {
-    background-color: #1cbec4;
+    background-color: #ff0000;
     color: #fff;
     box-shadow: 0 15px 20px rgba(0, 0, 0, 0.3);
     transform: translateY(-5px);

@@ -45,10 +45,25 @@ select {
     margin-bottom: 20px;
 }
 
+.input-container {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.input-container .input-item {
+    display: inline-block;
+    width: calc(50% - 5px); /* Ajuste para el margen */
+    margin-right: 5px;
+}
+
+.input-container .input-item:last-child {
+    margin-right: 0;
+}
+
 input[type="submit"],
 .btn-regresar {
     display: inline-block;
-    width: calc(50% - 5px); /* Ajuste para el margen */
+    width: calc(50% - 10px); /* Ajuste para el margen */
     padding: 10px;
     background-color: #389aa7;
     color: #fff;
@@ -58,7 +73,7 @@ input[type="submit"],
     font-size: 16px;
     text-align: center;
     text-decoration: none;
-    margin-right: 5px;
+    margin-top: 10px;
 }
 
 .btn-buscar:hover,
@@ -66,15 +81,6 @@ input[type="submit"],
     background-color: #ff0000;
 }
 
-.btn-regresar {
-    background-color: #333;
-}
-
-.btn-regresar:hover {
-    background-color: #555;
-}
-
-/* Estilos para las tablas */
 table {
     width: 100%;
     border-collapse: collapse;
