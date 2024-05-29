@@ -1,5 +1,4 @@
 <?php
-// Requiere la clase FacturaController
 require '../Controllers/FacturaControllers.php';
 require '../Controllers/conexionDBControllers.php';
 
@@ -52,16 +51,14 @@ if (isset($_GET['referencia'])) {
                                 <th>Nombre del Producto</th>
                                 <th>Precio Unitario</th>
                                 <th>Cantidad</th>
-                                <th>Valor Total</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php foreach ($detalles as $detalle): ?>
                                 <tr>
-                                    <td><?php echo htmlspecialchars($detalle['nombreProducto']); ?></td>
-                                    <td><?php echo htmlspecialchars($detalle['precioUnitario']); ?></td>
-                                    <td><?php echo htmlspecialchars($detalle['cantidad']); ?></td>
-                                    <td><?php echo htmlspecialchars($detalle['valorTotal']); ?></td>
+                                    <td><?php echo isset($detalle['nombreProducto']) ? htmlspecialchars($detalle['nombreProducto']) : ''; ?></td>
+                                    <td><?php echo isset($detalle['precioUnitario']) ? htmlspecialchars($detalle['precioUnitario']) : ''; ?></td>
+                                    <td><?php echo isset($detalle['cantidad']) ? htmlspecialchars($detalle['cantidad']) : ''; ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>

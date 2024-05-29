@@ -151,22 +151,24 @@ class FacturaController
 
     public function obtenerDetallesFactura($referencia)
     {
-        $sql = "SELECT * FROM detalleFacturas WHERE referenciaFactura = ?";
-        $stmt = $this->conexion->getConnection()->prepare($sql);
+    $sql = "SELECT d.*, a.nombre AS nombreProducto FROM detalleFacturas d
+            INNER JOIN articulos a ON d.idArticulo = a.id
+            WHERE d.referenciaFactura = ?";
+    $stmt = $this->conexion->getConnection()->prepare($sql);
 
-        if ($stmt === false) {
-            throw new Exception('Error al preparar la consulta de detalles de factura: ' . $this->conexion->getConnection()->error);
-        }
+    if ($stmt === false) {
+        throw new Exception('Error al preparar la consulta de detalles de factura: ' . $this->conexion->getConnection()->error);
+    }
 
-        $stmt->bind_param("s", $referencia);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $detalles = $result->fetch_all(MYSQLI_ASSOC);
-       
+    $stmt->bind_param("s", $referencia);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $detalles = $result->fetch_all(MYSQLI_ASSOC);
+    return $detalles;
     }
 
     public function obtenerFacturaPorReferencia($referencia)
-{
+    {
     $sql = "SELECT f.*, c.nombreCompleto, c.tipoDocumento, c.numeroDocumento, c.telefono, c.email, SUM(d.cantidad * d.precioUnitario) AS total, 
             GROUP_CONCAT(a.nombre SEPARATOR ', ') AS productos
             FROM facturas f 
@@ -189,8 +191,7 @@ class FacturaController
 
     return $factura;
 }
-
-
+   
    
 }
 
