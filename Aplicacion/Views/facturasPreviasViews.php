@@ -1,13 +1,16 @@
 <?php
-use App\Controllers\ConexionDBController;
-use App\Controllers\FacturaController;
-
+// Requiriendo las clases necesarias
 require '../Controllers/ConexionDBControllers.php';
 require '../Controllers/FacturaControllers.php';
 
+use App\Controllers\ConexionDBController;
+use App\Controllers\FacturaController;
+
+// Variables para almacenar los resultados
 $facturas = [];
 $detalles = [];
 
+// Si se envía el formulario para buscar facturas
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $conexion = new ConexionDBController();
     $facturaController = new FacturaController($conexion);
@@ -17,16 +20,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $facturas = $facturaController->obtenerFacturasPorCliente($numeroDocumento, $tipoDocumento);
 }
 
+// Si se solicita ver los detalles de una factura
 if (isset($_GET['referencia'])) {
     $conexion = new ConexionDBController();
     $facturaController = new FacturaController($conexion);
     $referencia = $_GET['referencia'];
     $detalles = $facturaController->obtenerDetallesFactura($referencia);
+    
+    // Redirigir a la página de detalles
+    header("Location: detalleFacturaViews.php?referencia=$referencia");
+    exit(); // Asegura que el script se detenga después de redirigir
 }
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -51,6 +59,7 @@ if (isset($_GET['referencia'])) {
                 <input type="text" id="numeroDocumento" name="numeroDocumento" required>
             </div>
             <input type="submit" value="Buscar" class="btn-buscar">
+            <a href="menuViews.php" class="btn-regresar">Regresar al Menú</a>
         </form>
 
         <?php if (!empty($facturas)): ?>
@@ -58,52 +67,28 @@ if (isset($_GET['referencia'])) {
             <table class="facturas-table">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Nombre Completo</th>
-                        <th>Tipo Documento</th>
-                        <th>Número Documento</th>
-                        <th>Email</th>
-                        <th>Teléfono</th>
+                        <th>Referencia</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                        <th>Descuento</th>
                         <th>Detalles</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($facturas as $factura): ?>
                         <tr>
-                            <td><?= isset($factura['id']) ? $factura['id'] : '' ?></td>
-                            <td><?= isset($factura['nombreCompleto']) ? $factura['nombreCompleto'] : '' ?></td>
-                            <td><?= isset($factura['tipoDocumento']) ? $factura['tipoDocumento'] : '' ?></td>
-                            <td><?= isset($factura['numeroDocumento']) ? $factura['numeroDocumento'] : '' ?></td>
-                            <td><?= isset($factura['email']) ? $factura['email'] : '' ?></td>
-                            <td><?= isset($factura['telefono']) ? $factura['telefono'] : '' ?></td>
-                            <td><a href="detalleFacturaViews.php?referencia=<?= isset($factura['referencia']) ? $factura['referencia'] : '' ?>">Ver Detalles</a></td>
+                            <td><?= isset($factura['referencia']) ? $factura['referencia'] : '' ?></td>
+                            <td><?= isset($factura['fecha']) ? $factura['fecha'] : '' ?></td>
+                            <td><?= isset($factura['estado']) ? $factura['estado'] : '' ?></td>
+                            <td><?= isset($factura['descuento']) ? $factura['descuento'] : '' ?></td>
+                            <td><a href="?referencia=<?= isset($factura['referencia']) ? $factura['referencia'] : '' ?>">Ver Detalles</a></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
         <?php endif; ?>
-
-        <?php if (!empty($detalles)): ?>
-            <h2>Detalles de la Factura</h2>
-            <table class="detalles-table">
-                <thead>
-                    <tr>
-                        <th>ID Artículo</th>
-                        <th>Cantidad</th>
-                        <th>Precio Unitario</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($detalles as $detalle): ?>
-                        <tr>
-                            <td><?= isset($detalle['idArticulo']) ? $detalle['idArticulo'] : '' ?></td>
-                            <td><?= isset($detalle['cantidad']) ? $detalle['cantidad'] : '' ?></td>
-                            <td><?= isset($detalle['precioUnitario']) ? $detalle['precioUnitario'] : '' ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        <?php endif; ?>
+        
+        
     </div>
 </body>
 </html>

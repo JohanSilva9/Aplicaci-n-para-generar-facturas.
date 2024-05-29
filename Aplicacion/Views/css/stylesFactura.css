@@ -58,6 +58,7 @@ select {
 
 /* Estilos para los botones */
 .btn-agregar,
+.btn-menu,
 .btn-generar {
     display: block;
     width: 100%;
@@ -72,11 +73,11 @@ select {
 }
 
 .btn-agregar:hover,
+.btn-menu:hover,
 .btn-generar:hover {
     background-color: #ff0000;
 }
 
-/* Estilos para los productos */
 .producto {
     border: 1px solid #ccc;
     padding: 10px;

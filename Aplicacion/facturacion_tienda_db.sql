@@ -24,7 +24,7 @@ CREATE DATABASE IF NOT EXISTS `facturacion_tienda_db` DEFAULT CHARACTER SET utf8
 USE `facturacion_tienda_db`;
 
 -- --------------------------------------------------------
-
+key
 --
 -- Estructura de tabla para la tabla `articulos`
 --

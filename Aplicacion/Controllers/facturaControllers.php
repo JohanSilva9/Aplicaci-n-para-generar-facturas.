@@ -164,4 +164,38 @@ class FacturaController
         $detalles = $result->fetch_all(MYSQLI_ASSOC);
        
     }
+
+    public function obtenerFacturaPorReferencia($referencia)
+    {
+        $sql = "SELECT f.*, c.nombreCompleto, c.tipoDocumento, c.numeroDocumento, c.telefono, c.email, SUM(d.cantidad * d.precioUnitario) AS total 
+                FROM facturas f 
+                INNER JOIN clientes c ON f.idCliente = c.id 
+                LEFT JOIN detalleFacturas d ON f.referencia = d.referenciaFactura 
+                WHERE f.referencia = ?";
+        $stmt = $this->conexion->getConnection()->prepare($sql);
+
+        if ($stmt === false) {
+            throw new Exception('Error al preparar la consulta de la factura por referencia: ' . $this->conexion->getConnection()->error);
+        }
+
+        $stmt->bind_param("s", $referencia);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $factura = $result->fetch_assoc();
+        $stmt->close();
+
+        return $factura;
+    }
+
+   
 }
+
+
+
+
+
+
+
+
+
+
