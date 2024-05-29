@@ -5,8 +5,8 @@ use App\Controllers\FacturaController;
 require '../Controllers/ConexionDBControllers.php';
 require '../Controllers/FacturaControllers.php';
 
-$facturas = null;
-$detalles = null;
+$facturas = [];
+$detalles = [];
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $conexion = new ConexionDBController();
@@ -20,7 +20,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 if (isset($_GET['referencia'])) {
     $conexion = new ConexionDBController();
     $facturaController = new FacturaController($conexion);
-    $detalles = $facturaController->obtenerDetallesFactura($_GET['referencia']);
+    $referencia = $_GET['referencia'];
+    $detalles = $facturaController->obtenerDetallesFactura($referencia);
 }
 ?>
 
@@ -52,7 +53,7 @@ if (isset($_GET['referencia'])) {
             <input type="submit" value="Buscar" class="btn-buscar">
         </form>
 
-        <?php if ($facturas): ?>
+        <?php if (!empty($facturas)): ?>
             <h2>Facturas Encontradas</h2>
             <table class="facturas-table">
                 <thead>
@@ -69,37 +70,35 @@ if (isset($_GET['referencia'])) {
                 <tbody>
                     <?php foreach ($facturas as $factura): ?>
                         <tr>
-                            <td><?= $factura['id'] ?></td>
-                            <td><?= $factura['nombreCompleto'] ?></td>
-                            <td><?= $factura['tipoDocumento'] ?></td>
-                            <td><?= $factura['numeroDocumento'] ?></td>
-                            <td><?= $factura['email'] ?></td>
-                            <td><?= $factura['telefono'] ?></td>
-                            <td><a href="?referencia=<?= $factura['id'] ?>">Ver Detalles</a></td>
+                            <td><?= isset($factura['id']) ? $factura['id'] : '' ?></td>
+                            <td><?= isset($factura['nombreCompleto']) ? $factura['nombreCompleto'] : '' ?></td>
+                            <td><?= isset($factura['tipoDocumento']) ? $factura['tipoDocumento'] : '' ?></td>
+                            <td><?= isset($factura['numeroDocumento']) ? $factura['numeroDocumento'] : '' ?></td>
+                            <td><?= isset($factura['email']) ? $factura['email'] : '' ?></td>
+                            <td><?= isset($factura['telefono']) ? $factura['telefono'] : '' ?></td>
+                            <td><a href="detalleFacturaViews.php?referencia=<?= isset($factura['referencia']) ? $factura['referencia'] : '' ?>">Ver Detalles</a></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
         <?php endif; ?>
 
-        <?php if ($detalles): ?>
+        <?php if (!empty($detalles)): ?>
             <h2>Detalles de la Factura</h2>
             <table class="detalles-table">
                 <thead>
                     <tr>
                         <th>ID Artículo</th>
-                        <th>Nombre Artículo</th>
                         <th>Cantidad</th>
                         <th>Precio Unitario</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($detalle as $detalle): ?>
+                    <?php foreach ($detalles as $detalle): ?>
                         <tr>
-                            <td><?= $detalle['idArticulo'] ?></td>
-                            <td><?= $detalle['nombreArticulo'] ?></td>
-                            <td><?= $detalle['cantidad'] ?></td>
-                            <td><?= $detalle['precioUnitario'] ?></td>
+                            <td><?= isset($detalle['idArticulo']) ? $detalle['idArticulo'] : '' ?></td>
+                            <td><?= isset($detalle['cantidad']) ? $detalle['cantidad'] : '' ?></td>
+                            <td><?= isset($detalle['precioUnitario']) ? $detalle['precioUnitario'] : '' ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

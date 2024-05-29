@@ -12,7 +12,7 @@
         <div class="botones-menu">
             <a href="facturaViews.php" class="boton-menu">Generar Factura</a>
             <a href="facturasPreviasViews.php" class="boton-menu">Facturas Previas</a>
-            <a href="detalleFacturaViews.php" class="boton-menu">Detalles Facturas</a>
+           
         </div>
     </div>
 </body>

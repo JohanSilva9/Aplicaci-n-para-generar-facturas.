@@ -6,7 +6,7 @@ class ConexionDBController
 {
     private $host = 'localhost';
     private $user = 'root'; 
-    private $pwd = 'root'; 
+    private $pwd = ''; 
     private $dataBase = 'facturacion_tienda_db';
     protected $conex;
 

@@ -109,7 +109,7 @@ class FacturaController
         }
 
         // Insertar los detalles de la factura en la base de datos
-        $sqlDetalle = "INSERT INTO detalleFacturas (cantidad, precioUnitario, idArticulo, refenciaFactura) VALUES (?, ?, ?, ?)";
+        $sqlDetalle = "INSERT INTO detalleFacturas (cantidad, precioUnitario, idArticulo, referenciaFactura) VALUES (?, ?, ?, ?)";
         $stmtDetalle = $this->conexion->getConnection()->prepare($sqlDetalle);
 
         if ($stmtDetalle === false) {
@@ -151,7 +151,7 @@ class FacturaController
 
     public function obtenerDetallesFactura($referencia)
     {
-        $sql = "SELECT * FROM detalleFacturas WHERE refenciaFactura = ?";
+        $sql = "SELECT * FROM detalleFacturas WHERE referenciaFactura = ?";
         $stmt = $this->conexion->getConnection()->prepare($sql);
 
         if ($stmt === false) {

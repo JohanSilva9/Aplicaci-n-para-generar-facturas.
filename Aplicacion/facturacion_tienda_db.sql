@@ -144,13 +144,13 @@ ALTER TABLE `clientes`
 ALTER TABLE `detalleFacturas`
   ADD PRIMARY KEY (`id`),
   ADD KEY `fk_detalleFacturas_articulos` (`idArticulo`),
-  ADD KEY `fk_detalleFacturas_refenciaFactura` (`refenciaFactura`);
+  ADD KEY `fk_detalleFacturas_referenciaFactura` (`referenciaFactura`);
 
 --
 -- Indices de la tabla `facturas`
 --
 ALTER TABLE `facturas`
-  ADD PRIMARY KEY (`refencia`),
+  ADD PRIMARY KEY (`referencia`),
   ADD KEY `fk_facturas_idCliente` (`idCliente`);
 
 --
@@ -196,7 +196,7 @@ ALTER TABLE `usuarios`
 --
 ALTER TABLE `detalleFacturas`
   ADD CONSTRAINT `fk_detalleFacturas_articulos` FOREIGN KEY (`idArticulo`) REFERENCES `articulos` (`id`),
-  ADD CONSTRAINT `fk_detalleFacturas_refenciaFactura` FOREIGN KEY (`refenciaFactura`) REFERENCES `facturas` (`refencia`);
+  ADD CONSTRAINT `fk_detalleFacturas_referenciaFactura` FOREIGN KEY (`referenciaFactura`) REFERENCES `facturas` (`referencia`);
 
 --
 -- Filtros para la tabla `facturas`
