@@ -32,7 +32,7 @@ class AuthController extends ConexionDBController
                 header("Location: MenuViews.php");
                 exit();
             } else {
-                header("Location: inicioViews.php");
+                header("Location: index.php");
                 $error_message = "Usuario o contraseña incorrectos";
                
             }
@@ -42,7 +42,7 @@ class AuthController extends ConexionDBController
         }
 
         // Incluye la vista de inicio de sesión
-        require_once('inicioViews.php');
+        require_once('index.php');
     }
 
     private function validarUsuario($usuario, $pwd)
